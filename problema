@@ -1,0 +1,175 @@
+#include <iostream>
+#include <string.h>
+#include<string>
+using namespace std;
+class empleado{
+private:
+    int clave;
+    string nombre;
+    string domicilio;
+    float sueldo;
+    string reportaA;
+public:
+    empleado(int _clave, string _nombre,string  _domicilio, float _sueldo, string _reportaA){ //constructor
+clave = _clave;
+nombre = _nombre;
+domicilio = _domicilio;
+sueldo = _sueldo;
+reportaA = _reportaA;
+    }
+
+    void imprime();
+    void CambiaDomicilio(string);
+    void CambiaReportaA(string);
+    void ActualizarSueldo(float);
+
+    empleado operator +(const empleado& otro) {
+        float nuevoSalario = this->sueldo + otro.sueldo; // sobrecarga del operador +
+        return empleado(this->clave, this->nombre + " & " + otro.nombre,
+                        this->domicilio, nuevoSalario, this->reportaA);
+    }
+
+    bool operator==(const empleado& otro) const { // Compara si los sueldos de ambos empleados son iguales
+        return this->sueldo == otro.sueldo;
+    }
+    bool operator<(const empleado& otro) const { //sobrecarga de <
+        return this->sueldo < otro.sueldo;
+    }
+    bool operator>(const empleado& otro) const {  // Sobrecarga del operador >
+        return this->sueldo > otro.sueldo;
+    }
+    bool operator!=(const empleado& otro) const { // compara que ambos sueldos sean diferentes
+        return this->sueldo != otro.sueldo;
+    }
+
+    friend ostream& operator<<(ostream& os, const empleado& emp) {
+        os << "Clave: " << emp.clave << ", Nombre: " << emp.nombre //sobrecarga de <<
+           << ", Domicilio: " << emp.domicilio << ", Sueldo: " << emp.sueldo
+           << ", Reporta a: " << emp.reportaA;
+        return os;
+    }
+    friend istream& operator>>(istream& is, empleado& emp) {
+        cout << "Ingrese nuevo sueldo: ";
+        is >> emp.sueldo;
+        return is;
+    }
+};
+
+
+
+int main()
+{
+    empleado JefePlanta(1,"Juan Sanchez","La Candelaria",60000,"Jefe Corporativo"); //objetos
+    empleado JefePersona(2,"Mauro Diaz","Tlaquepaque",70000,"Jefe Corporativo");
+
+    empleado sumaSalarios = JefePlanta + JefePersona; //suma de 2 clases por sobrecarga
+    sumaSalarios.imprime();
+    cout<<"Aqui se sumo el sueldo de los 2 empleados \n\n";
+
+    if (JefePlanta < JefePersona) {
+        cout << "Jefe persona tiene mas sueldo" << endl;
+    } else if(JefePlanta > JefePersona){
+        cout << "Jefe planta tiene mas sueldo" << endl;
+    }
+
+    if (JefePlanta == JefePersona){
+        cout << "ambos tiene el mismo sueldo" << endl;
+    } else if(JefePlanta != JefePersona){
+        cout << "Los empleados tienen un sueldo diferente" << endl;
+    }
+
+    cout<<"Aqui se comparo quein tiene mas sueldo y si es igual o diferente sus sueldos \n\n";
+
+    cout<<JefePersona <<endl; //mostrar jefeplanta con la sobrecarga
+
+    cin>>JefePersona;//cambiar sueldo a empleado
+
+    cout<<JefePersona <<endl; //mostrar jefeplanta con sueldo cambiado
+
+    int opciones, clave2, iterador = 0;
+string Domicilios, Jefes;
+    float sueldos;
+        do{
+
+        cout<<"\n Menu"<<endl;
+        cout<<"1. Imprimir empleados"<<endl;
+        cout<<"2. Cambiar domicilio de un empleado"<<endl;
+        cout<<"3. Cambiar a quien reporta el empledo"<<endl;
+        cout<<"4. Actualizar sueldo del empledo"<<endl;
+        cout<<"5. Salir"<<endl;
+      cout<<"Digite un numero: "<<endl;
+      cin>>opciones;
+
+     switch(opciones){
+     case 1: cout<<"Dame la clave del empleado: "<<endl;
+     cin>>clave2;
+     if(clave2 == 1){
+        JefePlanta.imprime();
+     }else if(clave2 == 2){
+         JefePersona.imprime();
+     }else cout<<"Valor no valido"<<endl<<endl;
+     break;
+     case 2: cout<<"Dame la clave del empleado a cambiar domicilio: "<<endl;
+            cin>>clave2;
+            if(clave2 == 1){
+        JefePlanta.CambiaDomicilio(Domicilios);
+     }else if(clave2 == 2){
+         JefePersona.CambiaDomicilio(Domicilios);
+     }else cout<<"Valor no valido"<<endl<<endl;
+      break;
+     case 3: cout<<"Dame la clave del empleado a cambiar a quien reporta: "<<endl;
+           cin>>clave2;
+           if(clave2 == 1){
+        JefePlanta.CambiaReportaA(Jefes);
+     }else if(clave2 == 2){
+         JefePersona.CambiaReportaA(Jefes);
+     }else cout<<"Valor no valido"<<endl<<endl;
+      break;
+      case 4: cout<<"Dame la clave del empleado a cambiar sueldo: "<<endl;
+           cin>>clave2;
+           if(clave2 == 1){
+        JefePlanta.ActualizarSueldo(sueldos);
+     }else if(clave2 == 2){
+         JefePersona.ActualizarSueldo(sueldos);
+     }else cout<<"Valor no valido"<<endl<<endl;
+          break;
+      case 5: cout<<"Hasta luego"<<endl;
+      iterador = 100;
+      break;
+     default: cout<<"Valor no valido"<<endl<<endl; break;
+}
+iterador++;
+        }while(iterador <= 100);
+
+return 0;
+
+}
+void empleado::imprime(){
+
+cout << "Clave: " << clave << endl;
+        cout << "Nombre: " << nombre << endl;
+        cout << "Domicilio: " << domicilio << endl;
+        cout << "Sueldo: " << sueldo << endl;
+        cout << "Reporta a: " << reportaA << endl;
+};
+
+void empleado::CambiaDomicilio(string nuevoDomicilio){
+    cout<<"Dame el nuevo domicilio: "<<endl;
+    cin>>nuevoDomicilio;
+domicilio = nuevoDomicilio;
+cout<<"Domicilio cambiado: "<<endl;
+};
+
+void empleado::CambiaReportaA(string nuevoReportaA){
+    cout<<"Dame el nuevo jefe a quien reportan: "<<endl;
+    cin>>nuevoReportaA;
+reportaA = nuevoReportaA;
+cout<<"Jefe cambiado correctamente"<<endl<<endl;
+};
+
+void empleado::ActualizarSueldo(float sueldo2){
+cout<<"Dame el nuevo sueldo: "<<endl;
+cin>>sueldo2;
+sueldo = sueldo2;
+cout<<"Sueldo actualizado correctamente"<<endl<<endl;
+};
